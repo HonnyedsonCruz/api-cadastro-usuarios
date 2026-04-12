@@ -97,3 +97,7 @@ http://localhost:XXXX/swagger
 ## 👨‍💻 Autor
 
 Feito por **Honnyedson** — [GitHub](https://github.com/HonnyedsonCruz) · [LinkedIn](https://linkedin.com/in/https://www.linkedin.com/in/honnyedson-cruz2005/)
+
+## 🌐 Deploy
+
+API disponível em: https://api-cadastro-usuarios-production.up.railway.app/swagger
