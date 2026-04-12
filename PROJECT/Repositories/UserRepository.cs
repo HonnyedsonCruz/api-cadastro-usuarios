@@ -34,4 +34,19 @@ public class UserRepository
         await _context.SaveChangesAsync();
         return true;
     }
+    public async Task<bool> EmailExists(string email) =>
+    await _context.Users.AnyAsync(u => u.Email == email);
+    public async Task<User?> Update(int id, string name, string email)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user == null) return null;
+
+        user.Name = name;
+        user.Email = email;
+
+        await _context.SaveChangesAsync();
+        return user;
+    }
+    public async Task<bool> EmailExistsForOtherUser(int id, string email) =>
+    await _context.Users.AnyAsync(u => u.Email == email && u.Id != id);
 }

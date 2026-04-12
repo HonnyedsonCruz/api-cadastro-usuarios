@@ -18,8 +18,12 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserDTO dto)
     {
-        var user = await _service.CreateUser(dto);
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+        var (user, error) = await _service.CreateUser(dto);
+
+        if (error != null)
+            return Conflict(new { message = error });
+
+        return CreatedAtAction(nameof(GetById), new { id = user!.Id }, user);
     }
 
     [HttpGet]
@@ -38,5 +42,18 @@ public class UserController : ControllerBase
     {
         var deleted = await _service.Delete(id);
         return deleted ? NoContent() : NotFound();
+    }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateUserDTO dto)
+    {
+        var (user, error) = await _service.Update(id, dto);
+
+        if (error == "Usuário não encontrado.")
+            return NotFound(new { message = error });
+
+        if (error != null)
+            return Conflict(new { message = error });
+
+        return Ok(user);
     }
 }

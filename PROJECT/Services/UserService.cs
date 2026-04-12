@@ -13,8 +13,12 @@ public class UserService
         _repository = repository;
     }
 
-    public async Task<UserResponseDTO> CreateUser(CreateUserDTO dto)
+    public async Task<(UserResponseDTO? user, string? error)> CreateUser(CreateUserDTO dto)
     {
+        var emailExists = await _repository.EmailExists(dto.Email);
+        if (emailExists)
+            return (null, "Este e-mail já está cadastrado.");
+
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
         var user = new User
@@ -26,13 +30,13 @@ public class UserService
 
         var created = await _repository.Create(user);
 
-        return new UserResponseDTO
+        return (new UserResponseDTO
         {
             Id = created.Id,
             Name = created.Name,
             Email = created.Email,
             CreatedAt = created.CreatedAt
-        };
+        }, null);
     }
 
     public async Task<List<UserResponseDTO>> GetAll()
@@ -62,4 +66,22 @@ public class UserService
     }
 
     public async Task<bool> Delete(int id) => await _repository.Delete(id);
+    public async Task<(UserResponseDTO? user, string? error)> Update(int id, UpdateUserDTO dto)
+    {
+        var emailExists = await _repository.EmailExistsForOtherUser(id, dto.Email);
+        if (emailExists)
+            return (null, "Este e-mail já está sendo usado por outro usuário.");
+
+        var updated = await _repository.Update(id, dto.Name, dto.Email);
+        if (updated == null)
+            return (null, "Usuário não encontrado.");
+
+        return (new UserResponseDTO
+        {
+            Id = updated.Id,
+            Name = updated.Name,
+            Email = updated.Email,
+            CreatedAt = updated.CreatedAt
+        }, null);
+    }
 }
