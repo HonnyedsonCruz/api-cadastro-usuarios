@@ -49,4 +49,7 @@ public class UserRepository
     }
     public async Task<bool> EmailExistsForOtherUser(int id, string email) =>
     await _context.Users.AnyAsync(u => u.Email == email && u.Id != id);
+
+    public async Task<User?> GetByEmail(string email) =>
+    await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 }

@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserApi.DTOs;
 using UserApi.Services;
+
 
 namespace UserApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly UserService _service;
@@ -15,6 +18,7 @@ public class UserController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserDTO dto)
     {
@@ -56,4 +60,5 @@ public class UserController : ControllerBase
 
         return Ok(user);
     }
+    
 }
