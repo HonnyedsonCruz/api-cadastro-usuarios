@@ -96,7 +96,7 @@ http://localhost:XXXX/swagger
 
 ## 👨‍💻 Autor
 
-Feito por **Honnyedson** — [GitHub](https://github.com/HonnyedsonCruz) · [LinkedIn](https://linkedin.com/in/https://www.linkedin.com/in/honnyedson-cruz2005/)
+Feito por **Honnyedson** — [GitHub](https://github.com/HonnyedsonCruz) · [LinkedIn](https://linkedin.com/in/honnyedson-cruz/)
 
 ## 🌐 Deploy
 
